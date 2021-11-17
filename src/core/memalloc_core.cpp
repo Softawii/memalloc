@@ -22,8 +22,12 @@ namespace mm_core {
         size_t size;
         /* Next Block */
         block_t next;
+        /* Previous Block */
+        block_t prev;
         /* Free */
         bool free;
+        /* Pointer to the data */
+        void * data;
         /* Data */
         char data[1];
     };
@@ -35,7 +39,7 @@ namespace mm_core {
      * @param size 
      * @return block_t 
      */
-    block_t find(block_t last, size_t size) {
+    block_t find(block_t * last, size_t size) {
         
         block_t b = base;
         
@@ -67,16 +71,48 @@ namespace mm_core {
             last->next = b;
         return (b);
 
-    void * malloc(size_t size) {
+    /**
+     * @brief splitting a block into two blocks, the second one will be free. 
+     * 
+     * @param b 
+     * @param size 
+     */
+    void split(block_t b, size_t size) {
+        block_t new_b = (block_t) b->data + size;
+        new_b->size = b->size - size - BLOCK_SIZE;
+        new_b->next = b->next;
+        new_b->free = true;
 
-        // Break :: The final of the heap
-        block_t b = sbrk(0);
-
-        sbrk(sizeof(struct s_block) + size);
-        
         b->size = size;
+        b->next = new_b;
+    }
 
-        return ptr;
+
+
+    void * malloc(size_t size) {
+        block_t b, last;
+
+        if(base) {
+            last = base;
+            b = find(&last, size);
+
+            if(b) {
+                if(b->size - s >= BLOCK_SIZE + 4) split(b, size);
+                b->free = false;
+            } else {
+                b = extend_heap(last, size);
+                if(!b)
+                    return (NULL);
+            }
+        } else {
+
+            b = extend_heap(NULL, size);
+            if(!b)
+                return (NULL);
+            base = b;
+        }
+
+        return (b->data);
     }
 }
 
