@@ -42,12 +42,6 @@ namespace mm_core {
     /**
      * Basic functions to the memory allocation.
      */
-    int init(int size);
-
-    void * malloc(size_t size);
-
-    int free(void * id);
-
     void split(block_t b, size_t size);
 
     block_t find(block_t * last, size_t size);
