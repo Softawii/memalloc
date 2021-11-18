@@ -18,8 +18,8 @@ namespace mm_core {
     /**
      * @brief splitting a block into two blocks, the second one will be free. 
      * 
-     * @param b 
-     * @param size 
+     * @param b The block that will be splited
+     * @param size The location where the block will be splited
      */
     void split(block_t b, size_t size) {
         block_t new_b = (block_t) b->data + size;
@@ -43,8 +43,8 @@ namespace mm_core {
     /**
      * @brief This function is trying to find some block that fit the size.
      * 
-     * @param last 
-     * @param size 
+     * @param last Last block of the heap.
+     * @param size The size that the function will look for.
      * @return block_t 
      */
     block_t find(block_t * last, size_t size) {
@@ -61,8 +61,8 @@ namespace mm_core {
     /**
      * @brief This function will extend the heap with the given size.
      * 
-     * @param last 
-     * @param size 
+     * @param last Last block of the heap.
+     * @param size How much the heap will be extended.
      * @return block_t 
      */
     block_t extend_heap(block_t last, size_t size) {
