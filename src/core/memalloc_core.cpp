@@ -86,6 +86,24 @@ namespace mm_core {
 
         return b;
     }
+
+
+    /**
+     * @brief Fusion of two released blocks
+     * 
+     * @param b 
+     * @return block_t 
+     */
+    block_t fusion(block_t b) {
+        if(b->next && b->next->free) {
+            b->size += BLOCK_SIZE + b->next->size;
+        b->next = b->next->next;
+
+        if(b->next)
+            b->next->prev = b;
+        
+        return (b);
+    }
 }
 
 

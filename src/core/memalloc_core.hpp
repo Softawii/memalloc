@@ -52,8 +52,9 @@ namespace mm_core {
 
     block_t find(block_t * last, size_t size);
 
-    block_t extend_heap(block_t last, size_t size)
+    block_t extend_heap(block_t last, size_t size);
 
+    block_t fusion(block_t b);
 
 } // end namespace mm_core
 
