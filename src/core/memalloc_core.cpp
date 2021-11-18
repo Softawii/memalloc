@@ -5,15 +5,15 @@
 // Memory allocation
 #include "memalloc_core.hpp"
 
-#define BLOCK_SIZE sizeof(struct s_block)
 
 /**
  * @brief The namespace mm_core contains the core of the memory manager. 
  * @details The core is responsible for allocating and freeing memory in a low level, using sbrk.
  */
 namespace mm_core {
-    /* Base Pointer */
-    void * base = NULL;
+
+    void* base = NULL;
+
     
     /**
      * @brief splitting a block into two blocks, the second one will be free. 
@@ -30,7 +30,7 @@ namespace mm_core {
         
         new_b->free = true;
 
-        new_b->data = new_b->data;
+        new_b->ptr = new_b->data;
         b->size = size;
         b->next = new_b;
 
@@ -49,8 +49,8 @@ namespace mm_core {
      */
     block_t find(block_t * last, size_t size) {
         
-        block_t b = base;
-        
+        block_t b = (block_t) base;
+
         while (b && ! (b->free && b->size >= size)) {
             *last = b;
             b = b->next;
@@ -66,18 +66,21 @@ namespace mm_core {
      * @return block_t 
      */
     block_t extend_heap(block_t last, size_t size) {
-        int sb; block_t b;
+        // TODO: Verificar se o bloco atual está livre, se estiver expandir de acordo com o size.
 
-        b = sbrk(0);
-        sb = (int) sbrk(BLOCK_SIZE + size);
+        int *sb; block_t b;
+
+        // Dei cast aqui
+        b = (block_t) sbrk(0);
+        sb = (int*) sbrk(BLOCK_SIZE + size);
 
         // Something Wrong :(
-        if(sb < 0) return (NULL);
+        if(*sb < 0) return (NULL);
 
         b->size = size;
         b->next = NULL;
         b->prev = last;
-        b->data = b->data;
+        b->ptr = b->data;
 
         if(last)
             last->next = b;
@@ -95,7 +98,7 @@ namespace mm_core {
      * @return block_t 
      */
     block_t fusion(block_t b) {
-        if(b->next && b->next->free) {
+        if(b->next && b->next->free) 
             b->size += BLOCK_SIZE + b->next->size;
         b->next = b->next->next;
 
@@ -105,5 +108,3 @@ namespace mm_core {
         return (b);
     }
 }
-
-
