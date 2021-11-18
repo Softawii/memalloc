@@ -7,7 +7,10 @@
 
 #define BLOCK_SIZE sizeof(struct s_block)
 
-
+/**
+ * @brief The namespace mm_core contains the core of the memory manager. 
+ * @details The core is responsible for allocating and freeing memory in a low level, using sbrk.
+ */
 namespace mm_core {
     /* Base Pointer */
     void * base = NULL;
@@ -31,6 +34,32 @@ namespace mm_core {
         /* Data */
         char data[1];
     };
+
+    
+    /**
+     * @brief splitting a block into two blocks, the second one will be free. 
+     * 
+     * @param b 
+     * @param size 
+     */
+    void split(block_t b, size_t size) {
+        block_t new_b = (block_t) b->data + size;
+        new_b->size = b->size - size - BLOCK_SIZE;
+        
+        new_b->next = b->next;
+        new_b->prev = b;
+        
+        new_b->free = true;
+
+        new_b->ptr = new_b->data;
+        b->size = size;
+        b->next = new_b;
+
+        if (new_b->next != NULL) {
+            new_b->next->prev = new_b;
+        }
+    }
+
 
     /**
      * @brief This function is trying to find some block that fit the size.
@@ -58,61 +87,25 @@ namespace mm_core {
      * @return block_t 
      */
     block_t extend_heap(block_t last, size_t size) {
-        block_t b = sbrk(0);
-        
-        if (sbrk(BLOCK_SIZE + size) == (void *) -1)
-            return (NULL);
-        
-        b->size = size;
-        b->free = false;
+        int sb; block_t b;
+
+        b = sbrk(0);
+        sb = (int) sbrk(BLOCK_SIZE + size);
+
+        // Something Wrong :(
+        if(sb < 0) return (NULL);
+
+        b->size = s;
         b->next = NULL;
+        b->prev = last;
+        b->prtr = b->data;
 
         if(last)
             last->next = b;
-        return (b);
+        
+        b->free = false;
 
-    /**
-     * @brief splitting a block into two blocks, the second one will be free. 
-     * 
-     * @param b 
-     * @param size 
-     */
-    void split(block_t b, size_t size) {
-        block_t new_b = (block_t) b->data + size;
-        new_b->size = b->size - size - BLOCK_SIZE;
-        new_b->next = b->next;
-        new_b->free = true;
-
-        b->size = size;
-        b->next = new_b;
-    }
-
-
-
-    void * malloc(size_t size) {
-        block_t b, last;
-
-        if(base) {
-            last = base;
-            b = find(&last, size);
-
-            if(b) {
-                if(b->size - s >= BLOCK_SIZE + 4) split(b, size);
-                b->free = false;
-            } else {
-                b = extend_heap(last, size);
-                if(!b)
-                    return (NULL);
-            }
-        } else {
-
-            b = extend_heap(NULL, size);
-            if(!b)
-                return (NULL);
-            base = b;
-        }
-
-        return (b->data);
+        return b;
     }
 }
 
