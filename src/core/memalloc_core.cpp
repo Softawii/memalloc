@@ -14,27 +14,6 @@
 namespace mm_core {
     /* Base Pointer */
     void * base = NULL;
-    /* Linked List of Blocks */
-    typedef struct s_block * block_t;
-
-    /**
-     * @brief Block structure, contains the size of the block and the next block
-     */
-    struct s_block {
-        /* Size of the block */
-        size_t size;
-        /* Next Block */
-        block_t next;
-        /* Previous Block */
-        block_t prev;
-        /* Free */
-        bool free;
-        /* Pointer to the data */
-        void * data;
-        /* Data */
-        char data[1];
-    };
-
     
     /**
      * @brief splitting a block into two blocks, the second one will be free. 
