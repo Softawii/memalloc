@@ -30,7 +30,7 @@ namespace mm_core {
         
         new_b->free = true;
 
-        new_b->ptr = new_b->data;
+        new_b->data = new_b->data;
         b->size = size;
         b->next = new_b;
 
@@ -74,10 +74,10 @@ namespace mm_core {
         // Something Wrong :(
         if(sb < 0) return (NULL);
 
-        b->size = s;
+        b->size = size;
         b->next = NULL;
         b->prev = last;
-        b->prtr = b->data;
+        b->data = b->data;
 
         if(last)
             last->next = b;
