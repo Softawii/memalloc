@@ -1,3 +1,5 @@
+#include <unistd.h> 
+
 #include "memalloc.hpp"
 #include "core/memalloc_core.hpp"
 // Custom Compile: object file of core
@@ -35,5 +37,28 @@ namespace memalloc {
 
         // Return allocated space
         return b->data;
+    }
+
+    int free(void * ptr) {
+        if(valid_address(ptr)) {
+            block_t b = get_block(ptr);
+            b->free = true;
+
+            if(b->prev && b->prev->free)
+                mm_core::fusion(b->prev);
+            if(b->next)
+                mm_core::fusion(b);
+            else {
+                if(b->prev)
+                    b->prev->next = NULL;
+                else
+                    base = NULL;
+                brk(b);
+            }
+            
+            return 0;
+        }
+
+        return -1;
     }
 }

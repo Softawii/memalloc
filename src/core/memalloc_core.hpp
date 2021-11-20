@@ -56,7 +56,18 @@ namespace mm_core {
 
     block_t extend_heap(block_t last, size_t size);
 
+
+    /**
+     * Function to help to free memory. 
+     * 
+     */
     block_t fusion(block_t b);
+
+    block_t get_block(void * ptr);
+
+    bool valid_address(void * ptr);
+
+    
 
 } // end namespace mm_core
 

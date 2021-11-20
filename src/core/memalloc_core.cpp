@@ -107,4 +107,27 @@ namespace mm_core {
         
         return (b);
     }
+
+    /**
+     * @brief Get the block object of a given pointer.
+     * 
+     * @param ptr 
+     * @return block_t 
+     */
+    block_t get_block(void * ptr) {
+
+        // Free in the middle of a block may broke that shit
+        char * tmp = (char*) ptr;
+        return (block_t) (tmp - BLOCK_SIZE);
+    }
+
+    bool valid_address(void * ptr) {
+        if (base) {
+            if(ptr > base && ptr < sbrk(0)) {
+                // Here we aren't allowing the user to free a block in the middle
+                return ptr == (get_block(ptr))->ptr;
+            }
+        }
+        return false;
+    }
 }
