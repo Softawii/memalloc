@@ -1,6 +1,7 @@
 // Default
 #include <unistd.h>
 #include <sys/types.h>
+#include <stdlib.h>
 
 // Memory allocation
 #include "memalloc_core.hpp"
