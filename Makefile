@@ -11,9 +11,9 @@ lib:
 	ar -cvq -o bin/libmemalloc.a memalloc_core.o memalloc.o
 
 clean: clean_objects
-	rm testing
-	rm libmemalloc.so
+	rm testing.out
+	rm ./bin/libmemalloc.a
 
 clean_objects:
-	rm memalloc.o
-	rm memalloc_core.o
+	-rm memalloc.o
+	-rm memalloc_core.o
