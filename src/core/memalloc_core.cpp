@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 // Memory allocation
 #include "memalloc_core.hpp"
@@ -98,15 +99,15 @@ namespace mm_core {
      * @param b 
      * @return block_t 
      */
-    block_t fusion(block_t b) {
-        if(b->next && b->next->free) 
+    block_t fusion(block_t b){
+        if (b->next && b->next->free){
             b->size += BLOCK_SIZE + b->next->size;
-        b->next = b->next->next;
-
-        if(b->next)
-            b->next->prev = b;
-        
-        return (b);
+            b->next = b->next->next;
+            if (b->next) {
+                b->next->prev = b;
+            }
+        }
+        return b;
     }
 
     /**
@@ -118,14 +119,27 @@ namespace mm_core {
     block_t get_block(void * ptr) {
 
         // Free in the middle of a block may broke that shit
-        char * tmp = (char*) ptr;
-        return (block_t) (tmp - BLOCK_SIZE);
+        char *tmp = (char*) ptr;
+        return (block_t) (ptr = tmp - BLOCK_SIZE);
     }
 
     bool valid_address(void * ptr) {
+        
+        printf("Valid Address Test\n");
         if (base) {
+            printf("Base\n");
             if(ptr > base && ptr < sbrk(0)) {
                 // Here we aren't allowing the user to free a block in the middle
+                block_t blk = get_block(ptr);
+                
+                printf("Ok\n");
+                printf("PTR: %p\n", ptr);
+                printf("GetBlock\n");
+                printf("SIZE: %ld\n", blk->size);
+                printf("PTR: %p\n", blk->ptr);
+
+
+        
                 return ptr == (get_block(ptr))->ptr;
             }
         }

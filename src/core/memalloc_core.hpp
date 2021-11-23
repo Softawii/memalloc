@@ -14,7 +14,7 @@
 #define __MEMALLOC_CORE_HPP__
 
 
-#define BLOCK_SIZE sizeof(struct s_block)
+#define BLOCK_SIZE (sizeof(struct s_block) - 1)
 
 /**
  * @brief That Namespace is the core of the library.
@@ -45,7 +45,8 @@ namespace mm_core {
         void * ptr;
         /* Data */
         char data[1];
-    };
+    } __attribute__((packed)); // Precisa disso aq, by EduardoFerro
+    // O Compilador ta alinhando isso ai, ent~ao tem que remover o alinhamento
 
     /**
      * Basic functions to the memory allocation.

@@ -2,12 +2,20 @@
 
 #include "memalloc.hpp"
 #include "core/memalloc_core.hpp"
+
+#include <iostream>
+
 // Custom Compile: object file of core
 using namespace mm_core;
+using namespace std;
+
 
 namespace memalloc {
 
     void * malloc(size_t size) {
+        printf("BASE: %p\n", mm_core::base);
+        
+        
         block_t b, last;
         // TODO: Aplicar função align para deixar os valores arredondados para potência de 2.
         size_t s = size;
@@ -41,6 +49,9 @@ namespace memalloc {
 
     int free(void * ptr) {
         if(valid_address(ptr)) {
+
+            cout << "Valid Address" << endl;
+
             block_t b = get_block(ptr);
             b->free = true;
 
