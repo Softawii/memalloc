@@ -7,7 +7,6 @@
 // Memory allocation
 #include "memalloc_core.hpp"
 
-
 /**
  * @brief The namespace mm_core contains the core of the memory manager. 
  * @details The core is responsible for allocating and freeing memory in a low level, using sbrk.
@@ -125,20 +124,10 @@ namespace mm_core {
 
     bool valid_address(void * ptr) {
         
-        printf("Valid Address Test\n");
         if (base) {
-            printf("Base\n");
             if(ptr > base && ptr < sbrk(0)) {
                 // Here we aren't allowing the user to free a block in the middle
                 block_t blk = get_block(ptr);
-                
-                printf("Ok\n");
-                printf("PTR: %p\n", ptr);
-                printf("GetBlock\n");
-                printf("SIZE: %ld\n", blk->size);
-                printf("PTR: %p\n", blk->ptr);
-
-
         
                 return ptr == (get_block(ptr))->ptr;
             }

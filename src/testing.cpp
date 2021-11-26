@@ -14,14 +14,21 @@ int main(int argc, char **argv) {
     int * arr = (int *) mm::malloc(sizeof(int) * 15);
     int * arr2 = (int *) mm::malloc(sizeof(int) * 15);
 
+    printf("arr: %p\n", arr);
+    printf("arr2: %p\n", arr2);
 
-    printf("Pointer Address: %p\n", arr);
-    printf("Pointer Address: %p\n", arr2);
-
-    
-    printf("arr2 - arr = %ld\n", arr2 - arr - sizeof(mm_core::block_t));
 
     printf("Free Status: %d\n", mm::free(arr2));
+
+    int * arr3 = (int *) mm::malloc(sizeof(int) * 25);
+
+    printf("arr3: %p\n", arr3);
+
+
+
+
+
+
 
 
 

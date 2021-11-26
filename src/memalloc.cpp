@@ -13,8 +13,6 @@ using namespace std;
 namespace memalloc {
 
     void * malloc(size_t size) {
-        printf("BASE: %p\n", mm_core::base);
-        
         
         block_t b, last;
         // TODO: Aplicar função align para deixar os valores arredondados para potência de 2.
@@ -50,7 +48,6 @@ namespace memalloc {
     int free(void * ptr) {
         if(valid_address(ptr)) {
 
-            cout << "Valid Address" << endl;
 
             block_t b = get_block(ptr);
             b->free = true;
