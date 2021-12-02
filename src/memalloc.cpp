@@ -45,7 +45,7 @@ namespace memalloc {
         return b->data;
     }
 
-    int free(void * ptr) {
+    void free(void * ptr) {
         if(valid_address(ptr)) {
 
 
@@ -64,9 +64,9 @@ namespace memalloc {
                 brk(b);
             }
             
-            return 0;
+            return;
         }
 
-        return -1;
+        return;
     }
 }

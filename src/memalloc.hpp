@@ -28,7 +28,7 @@ namespace memalloc {
 
     void * malloc(size_t size);
 
-    int free(void * ptr);
+    void free(void * ptr);
 
 }
 

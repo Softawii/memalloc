@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdlib.h>
 #include "memalloc.hpp"
 
 #include "core/memalloc_core.hpp"
@@ -9,27 +10,22 @@ using namespace std;
 namespace mm = memalloc;
 
 
+int test_allocation(void * (*allocator)(size_t), void (*deallocator)(void *), size_t size) {
+    int * ptr = (int *) allocator(sizeof(int) * size);
+    
+    if (ptr == NULL) {
+        cout << "Failed to allocate memory" << endl;
+        return 1;
+    }
+    
+    deallocator(ptr);
+    return 0;
+}
+
+
 int main(int argc, char **argv) {
 
-    int * arr = (int *) mm::malloc(sizeof(int) * 15);
-    int * arr2 = (int *) mm::malloc(sizeof(int) * 15);
-
-    printf("arr: %p\n", arr);
-    printf("arr2: %p\n", arr2);
-
-
-    printf("Free Status: %d\n", mm::free(arr2));
-
-    int * arr3 = (int *) mm::malloc(sizeof(int) * 25);
-
-    printf("arr3: %p\n", arr3);
-
-
-
-
-
-
-
-
+    cout << test_allocation(mm::malloc, mm::free, 10) << endl; 
+    cout << test_allocation(malloc, free, 10) << endl; 
 
 }
