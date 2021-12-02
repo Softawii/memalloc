@@ -1,6 +1,8 @@
 #include <iostream>
 #include <stdlib.h>
+
 #include <string>
+#include <string.h>
 
 #include <assert.h>
 
@@ -57,26 +59,25 @@ int test_edu(void * (*allocator)(size_t), void (*deallocator)(void *), size_t si
 
 
 int main(int argc, char **argv) {
+    string type = "memalloc";
+    
     Stopwatch stopwatch;
     FREQUENCY(stopwatch);
 
+    for(int i = 1; i < argc; i++) {
+        if(strcmp(argv[i], "--std") == 0) type = "std";
+    }
+
+    void * (*allocator)(size_t) = type.compare("std") == 0 ? malloc : mm::malloc;
+    void (*deallocator)(void *) = type.compare("std") == 0 ? free : mm::free;
+
     Test_PTR test = test_edu;
 
-    cout << "Batch of tests in memalloc" << endl;
+    cout << "Batch of tests in " << type << endl;
 
     START_STOPWATCH(stopwatch);
-    for(int i = 0; i < 100; i++) test(mm::malloc, mm::free, 100);
+    for(int i = 10; i < 100000; i += 100) test(allocator, deallocator, i);
     STOP_STOPWATCH(stopwatch);
 
     cout << "Elapsed Time: " << std::to_string(stopwatch.mElapsedTime) << endl;
-
-
-    cout << "Batch of tests in std malloc" << endl;
-
-    START_STOPWATCH(stopwatch);    
-    for(int i = 0; i < 100; i++) test(malloc, free, 100);
-    STOP_STOPWATCH(stopwatch);
-
-    cout << "Elapsed Time: " << std::to_string(stopwatch.mElapsedTime) << endl;
-
 }
