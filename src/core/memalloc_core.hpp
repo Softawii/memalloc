@@ -46,7 +46,7 @@ namespace mm_core {
         /* Data */
         char data[1];
     } __attribute__((packed)); // Precisa disso aq, by EduardoFerro
-    // O Compilador ta alinhando isso ai, ent~ao tem que remover o alinhamento
+    // O Compilador ta alinhando isso ai, ent~ao tem que remover o alinhamentog
 
     /**
      * Basic functions to the memory allocation.
