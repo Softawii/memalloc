@@ -50,6 +50,8 @@ int test_edu(void * (*allocator)(size_t), void (*deallocator)(void *), size_t si
         assert(inteiros[i] == 10);
     }
 
+    deallocator(inteiros);
+
     return 0;
 }
 
@@ -63,7 +65,7 @@ int main(int argc, char **argv) {
     cout << "Batch of tests in memalloc" << endl;
 
     START_STOPWATCH(stopwatch);
-    test(mm::malloc, mm::free, 100);
+    for(int i = 0; i < 100; i++) test(mm::malloc, mm::free, 100);
     STOP_STOPWATCH(stopwatch);
 
     cout << "Elapsed Time: " << std::to_string(stopwatch.mElapsedTime) << endl;
@@ -72,7 +74,7 @@ int main(int argc, char **argv) {
     cout << "Batch of tests in std malloc" << endl;
 
     START_STOPWATCH(stopwatch);    
-    test(mm::malloc, mm::free, 100);
+    for(int i = 0; i < 100; i++) test(malloc, free, 100);
     STOP_STOPWATCH(stopwatch);
 
     cout << "Elapsed Time: " << std::to_string(stopwatch.mElapsedTime) << endl;
