@@ -23,7 +23,7 @@ namespace mm_core {
      * @param size The location where the block will be splited
      */
     void split(block_t b, size_t size) {
-        block_t new_b = (block_t) b->data + size;
+        block_t new_b = (block_t) (b->data + size);
         new_b->size = b->size - size - BLOCK_SIZE;
         
         new_b->next = b->next;
@@ -125,10 +125,7 @@ namespace mm_core {
     bool valid_address(void * ptr) {
         
         if (base) {
-            if(ptr > base && ptr < sbrk(0)) {
-                // Here we aren't allowing the user to free a block in the middle
-                block_t blk = get_block(ptr);
-        
+            if(ptr > base && ptr < sbrk(0)) {        
                 return ptr == (get_block(ptr))->ptr;
             }
         }

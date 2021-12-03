@@ -107,7 +107,6 @@ int test_overlap(void * (*allocator)(size_t), void (*deallocator)(void *), size_
         }
     
         for (size_t i = 0; i < size; i++) {
-            cout << integers1[i] << " : " << integers2[i] << endl;
             assert(integers1[i] == 10);
             assert(integers2[i] == 5);
 

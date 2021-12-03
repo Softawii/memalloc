@@ -53,7 +53,7 @@ namespace memalloc {
             b->free = true;
 
             if(b->prev && b->prev->free)
-                mm_core::fusion(b->prev);
+                b = mm_core::fusion(b->prev);
             if(b->next)
                 mm_core::fusion(b);
             else {
@@ -61,7 +61,9 @@ namespace memalloc {
                     b->prev->next = NULL;
                 else
                     base = NULL;
-                brk(b);
+
+                if(brk(b) == -1)
+                    return;
             }
             
             return;
