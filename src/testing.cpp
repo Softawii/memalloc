@@ -30,10 +30,7 @@ typedef int (*Test_PTR)(void * (*allocator)(size_t), void (*deallocator)(void *)
 int test_base(void * (*allocator)(size_t), void (*deallocator)(void *), size_t size) {
     int * ptr = (int *) allocator(sizeof(int) * size);
     
-    if (ptr == NULL) {
-        cout << "Failed to allocate memory" << endl;
-        return 1;
-    }
+    assert(ptr != NULL);
     
     deallocator(ptr);
     return 0;
@@ -88,6 +85,40 @@ int test_alloc(void * (*allocator)(size_t), void (*deallocator)(void *), size_t 
 }
 
 
+/**
+ * @brief 
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
+int test_overlap(void * (*allocator)(size_t), void (*deallocator)(void *), size_t size) {
+    
+        int *integers1 = (int *) allocator(sizeof(int) * size);
+        
+        for (size_t i = 0; i < size; i++) {
+            integers1[i] = 10;
+        }
+
+        int *integers2 = (int *) allocator(sizeof(int) * size);
+
+        for (size_t i = 0; i < size; i++) {
+            integers2[i] = 5;
+        }
+    
+        for (size_t i = 0; i < size; i++) {
+            cout << integers1[i] << " : " << integers2[i] << endl;
+            assert(integers1[i] == 10);
+            assert(integers2[i] == 5);
+
+        }
+    
+        deallocator(integers1);
+        deallocator(integers2);
+
+        return 0;
+}
+
 int main(int argc, char **argv) {
     string type = "memalloc";
     Test_PTR test = test_alloc;
@@ -100,14 +131,15 @@ int main(int argc, char **argv) {
      * @brief Command line arguments parsing 
      */
     for(int i = 1; i < argc; i++) {
-        if(strcmp(argv[i], "--std") == 0) type = "std";
-        if(strcmp(argv[i], "-n") == 0) count = atoi(argv[i+1]);
+        if  (strcmp(argv[i], "--std") == 0) type = "std";
+        else if(strcmp(argv[i], "-n") == 0) count = atoi(argv[i+1]);
 
         // Functions to Run
         // Maybe change it to a map ok?
-        if(strcmp(argv[i], "--test_base") == 0)         test = test_base;
-        if(strcmp(argv[i], "--test_malloc_free") == 0)  test = test_alloc_and_dealloc;
-        if(strcmp(argv[i], "--test_alloc") == 0)        test = test_alloc;
+        else if(strcmp(argv[i], "--test_base") == 0)         test = test_base;
+        else if(strcmp(argv[i], "--test_malloc_free") == 0)  test = test_alloc_and_dealloc;
+        else if(strcmp(argv[i], "--test_alloc") == 0)        test = test_alloc;
+        else if(strcmp(argv[i], "--test_overlap") == 0)      test = test_overlap;
     }
 
     /**

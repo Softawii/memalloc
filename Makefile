@@ -1,11 +1,11 @@
 all: objects lib clean_objects
-	g++ src/testing.cpp -lmemalloc -L./bin/ -o testing.out -std=c++17
+	g++ src/testing.cpp -lmemalloc -L./bin/ -o testing.out  -O3
 
 run:
 	./testing.out
 
 objects:
-	g++ -c -fpic src/memalloc.cpp src/core/memalloc_core.cpp
+	g++ -c -fpic src/memalloc.cpp src/core/memalloc_core.cpp -O3
 
 lib:
 	ar -cvq -o bin/libmemalloc.a memalloc_core.o memalloc.o
