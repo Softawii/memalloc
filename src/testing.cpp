@@ -123,6 +123,34 @@ int test_overlap(void * (*allocator)(size_t), void (*deallocator)(void *), size_
         return 0;
 }
 
+
+int test_intensive_overlap(void * (*allocator)(size_t), void (*deallocator)(void *), size_t size) {
+    
+        for(size_t n = 1; n < size; n++) {
+            int *integers1 = (int *) allocator(sizeof(int) * n);
+
+            for (size_t i = 0; i < n; i++) {
+                integers1[i] = 10;
+            }
+            
+            int *integers2 = (int *) allocator(sizeof(int) * n);
+
+            for (size_t i = 0; i < n; i++) {
+                integers2[i] = 5;
+            }
+
+            for (size_t i = 0; i < n; i++) {
+                assert(integers1[i] == 10);
+                assert(integers2[i] == 5);
+            }
+
+            deallocator(integers1);
+            deallocator(integers2);
+        }
+
+        return 0;
+}
+
 int main(int argc, char **argv) {
     string type = "memalloc";
     Test_PTR test = test_alloc;
@@ -147,6 +175,8 @@ int main(int argc, char **argv) {
         else if(strcmp(argv[i], "--test_malloc_free") == 0)  { test = test_alloc_and_dealloc; test_name = "test_alloc_and_dealloc"; }
         else if(strcmp(argv[i], "--test_alloc") == 0)        { test = test_alloc; test_name = "test_alloc"; }
         else if(strcmp(argv[i], "--test_overlap") == 0)      { test = test_overlap; test_name = "test_overlap"; }
+        else if(strcmp(argv[i], "--test_intensive_overlap") == 0)      { test = test_intensive_overlap; test_name = "test_intensive_overlap"; }
+
     }
 
     std::ofstream myfile;
