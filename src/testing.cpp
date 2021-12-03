@@ -155,6 +155,7 @@ int main(int argc, char **argv) {
     else {
         myfile.open("./res/results.csv", std::ofstream::app);
         myfile << "test" << "," << "type" << "," << "interactions" << "," << "elapsed_time" << endl;
+        
     }
     /**
      * @brief Base stats 
