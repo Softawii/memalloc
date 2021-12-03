@@ -51,17 +51,17 @@ int test_base(void * (*allocator)(size_t), void (*deallocator)(void *), size_t s
  */
 int test_alloc_and_dealloc(void * (*allocator)(size_t), void (*deallocator)(void *), size_t size) {
 
-    int *inteiros = (int *) allocator(sizeof(int) * size);
+    int *integers = (int *) allocator(sizeof(int) * size);
     
     for (size_t i = 0; i < size; i++) {
-        inteiros[i] = 10;
+        integers[i] = 10;
     }
 
     for (size_t i = 0; i < size; i++) {
-        assert(inteiros[i] == 10);
+        assert(integers[i] == 10);
     }
 
-    deallocator(inteiros);
+    deallocator(integers);
 
     return 0;
 }
@@ -76,14 +76,14 @@ int test_alloc_and_dealloc(void * (*allocator)(size_t), void (*deallocator)(void
  */
 int test_alloc(void * (*allocator)(size_t), void (*deallocator)(void *), size_t size) {
 
-    int *inteiros = (int *) allocator(sizeof(int) * size);
+    int *integers = (int *) allocator(sizeof(int) * size);
     
     for (size_t i = 0; i < size; i++) {
-        inteiros[i] = 10;
+        integers[i] = 10;
     }
     
     for (size_t i = 0; i < size; i++) {
-        assert(inteiros[i] == 10);
+        assert(integers[i] == 10);
     }
 
     return 0;
