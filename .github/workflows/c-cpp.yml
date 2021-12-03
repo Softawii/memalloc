@@ -31,7 +31,7 @@ jobs:
       run: make
       
     - name: Permission
-      run: chmod 777 ./run_tests.sh
+      run: chmod 777 ./run_unique_tests.sh
     
     - name: Run
-      run: ./run_tests.sh
+      run: ./run_unique_tests.sh
