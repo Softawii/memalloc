@@ -8,6 +8,7 @@ objects:
 	g++ -c -fpic src/memalloc.cpp src/core/memalloc_core.cpp -O3
 
 lib:
+	-mkdir bin
 	ar -cvq -o bin/libmemalloc.a memalloc_core.o memalloc.o
 
 clean: clean_objects
