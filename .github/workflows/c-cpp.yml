@@ -8,6 +8,7 @@ on:
       - '**.hpp'
       - '**.cpp'
       - 'makefile'
+      - '**.sh'
     branches:
       - main
       - develop
