@@ -127,6 +127,7 @@ int main(int argc, char **argv) {
     string type = "memalloc";
     Test_PTR test = test_alloc;
     string test_name;
+    bool print = false;
     int count = 100;
     
     Stopwatch stopwatch;
@@ -138,6 +139,7 @@ int main(int argc, char **argv) {
     for(int i = 1; i < argc; i++) {
         if  (strcmp(argv[i], "--std") == 0) type = "std";
         else if(strcmp(argv[i], "-n") == 0) count = atoi(argv[i+1]);
+        else if(strcmp(argv[i], "--print") == 0) print = true;
 
         // Functions to Run
         // Maybe change it to a map ok?
@@ -159,7 +161,8 @@ int main(int argc, char **argv) {
     /**
      * @brief Base stats 
      */
-    cout << "Running " << YELLOW << type << COLOR_RESET << " tests with " << YELLOW << count << COLOR_RESET << " iterations" << endl;
+    if (print)
+        cout << "Running " << YELLOW << type << COLOR_RESET << " tests with " << YELLOW << count << COLOR_RESET << " iterations" << endl;
     myfile << test_name << "," << type << "," << count << ",";
 
     /**
@@ -168,8 +171,8 @@ int main(int argc, char **argv) {
     void * (*allocator)(size_t) = type.compare("std") == 0 ? malloc : mm::malloc;
     void (*deallocator)(void *) = type.compare("std") == 0 ? free : mm::free;
 
-
-    cout << "Batch of tests in " << type << endl;
+    if(print)
+        cout << "Batch of tests in " << type << endl;
     
     cout << RED;
     START_STOPWATCH(stopwatch);
@@ -177,6 +180,7 @@ int main(int argc, char **argv) {
     STOP_STOPWATCH(stopwatch);
     cout << COLOR_RESET;  
 
-    cout << GREEN << "Elapsed Time: " << std::to_string(stopwatch.mElapsedTime) << COLOR_RESET << endl;
+    if(print)
+        cout << GREEN << "Elapsed Time: " << std::to_string(stopwatch.mElapsedTime) << COLOR_RESET << endl;
     myfile << std::to_string(stopwatch.mElapsedTime) << endl;
 }
