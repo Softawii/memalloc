@@ -1,0 +1,9 @@
+test,type,interactions,elapsed_time
+test_base,memalloc,100,3.236000
+test_base,std,100,0.164000
+test_alloc_and_dealloc,memalloc,100,4.373000
+test_alloc_and_dealloc,std,100,0.078000
+test_alloc,memalloc,100,0.924000
+test_alloc,std,100,0.187000
+test_overlap,memalloc,100,1.931000
+test_overlap,std,100,0.168000

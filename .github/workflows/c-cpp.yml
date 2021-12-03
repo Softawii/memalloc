@@ -1,4 +1,3 @@
-
 name: Makefile CI
 
 on:
@@ -31,8 +30,8 @@ jobs:
     - name: Compile
       run: make
       
+    - name: Permission
+      run: chmod 777 ./run_tests.sh
+    
     - name: Run
       run: ./run_tests.sh
-      
-#     - name: Run distcheck
-#       run: make distcheck
