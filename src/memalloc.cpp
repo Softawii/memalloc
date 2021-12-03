@@ -32,7 +32,6 @@ namespace memalloc {
                 if(!b)
                     return NULL;
             }
-
         }
         else {
             b = extend_heap(NULL, s);
