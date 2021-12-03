@@ -1,5 +1,5 @@
 all: objects lib clean_objects
-	g++ src/testing.cpp -lmemalloc -L./bin/ -o testing.out  -O3
+	g++ src/testing.cpp -lmemalloc -L./bin/ -o testing.out  -O3 -std=c++17
 
 run:
 	./testing.out
