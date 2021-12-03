@@ -1,0 +1,36 @@
+name: Makefile CI
+
+on:
+  push:
+    paths:
+      - '**.h'
+      - '**.hpp'
+      - '**.cpp'
+      - 'makefile'
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+#     - name: configure
+#       run: ./configure
+      
+    - name: Compile
+      run: make
+      
+    - name: Run
+      run: ./run_tests.sh
+      
+#     - name: Run distcheck
+#       run: make distcheck
