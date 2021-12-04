@@ -30,6 +30,8 @@ namespace memalloc {
 
     void free(void * ptr);
 
+    bool select_find(string method);
+
 }
 
 #endif // End of __MEMALLOC_HPP__

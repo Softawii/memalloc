@@ -17,4 +17,8 @@ namespace memalloc {
     void free(void * ptr) {
         mm_core::free(ptr);
     }
+
+    bool select_find(string method) {
+        return mm_core::select_find(method); 
+    }
 }
