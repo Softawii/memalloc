@@ -69,14 +69,13 @@ namespace mm_core {
     block_t extend_heap(block_t last, size_t size) {
         // TODO: Verificar se o bloco atual está livre, se estiver expandir de acordo com o size.
 
-        int *sb; block_t b;
+        block_t b;
 
         // Dei cast aqui
         b = (block_t) sbrk(0);
-        sb = (int*) sbrk(BLOCK_SIZE + size);
 
         // Something Wrong :(
-        if(*sb < 0) return (NULL);
+        if(sbrk(BLOCK_SIZE + size) == (void *) -1) return (NULL);
 
         b->size = size;
         b->next = NULL;
