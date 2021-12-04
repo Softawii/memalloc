@@ -64,12 +64,14 @@ namespace mm_core {
 			return true;
 		}
 		else if (s.compare("--find_worst_fit") == 0) {
-			selected_find = find_worst_fit;
-			return true;
-
             #ifdef MEMALLOC_CORE_DEBUG
                 cout << "Selected find: worst_fit" << endl;
             #endif
+
+			selected_find = find_worst_fit;
+			
+            return true;
+
 		}
 		return false;
 	}
@@ -113,24 +115,22 @@ namespace mm_core {
     block_t find_worst_fit(block_t * last, size_t size) {
         
         block_t b = (block_t) base;
-        // Iniciando o bigger como NULL pq pode existir a possibilidade de nenhum bloco de encaixar na requisicao
         block_t bigger = NULL;
 
         while (b && ! (b->free && b->size == size)) {
             *last = b;
             b = b->next;
-            
-            // (bigger && b->free && b->size > bigger->size) -> Bigger Existe? O B ta livre? O B é maior que o Bigger? Se Sim para todos adicionar!
-            // (b->free && bigger == NULL) -> B ta livre? Bigger nao existe? O tamanho de B é maior ou igual ao que queremos? Se sim, adiciona!
-            if( (bigger && b->free && b->size > bigger->size) || (b->free && bigger == NULL && b->size >= size)  ) {
+
+            if(b->size >= size && 
+                ((b->free && bigger && b->size > bigger->size) || 
+                (b->free && !bigger)) ) 
+            {
                 bigger = b;
             }
         }
-        if(b->free && b->size == size) {
+        if(b->size == size) {
             return b;
         }
-
-        // Quando retorna NULL ele adiciona mais na memória (Mecanismo do malloc é esse)
         return (bigger);
     }
 
