@@ -70,8 +70,8 @@ namespace mm_core {
             b = b->next;
             
             // (bigger && b->free && b->size > bigger->size) -> Bigger Existe? O B ta livre? O B é maior que o Bigger? Se Sim para todos adicionar!
-            // (b->free && bigger == NULL) -> B ta livre? Bigger nao existe? Se sim, adiciona!
-            if( (bigger && b->free && b->size > bigger->size) || (b->free && bigger == NULL)  ) {
+            // (b->free && bigger == NULL) -> B ta livre? Bigger nao existe? O tamanho de B é maior ou igual ao que queremos? Se sim, adiciona!
+            if( (bigger && b->free && b->size > bigger->size) || (b->free && bigger == NULL && b->size >= size)  ) {
                 bigger = b;
             }
         }
