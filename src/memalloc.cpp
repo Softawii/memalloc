@@ -9,7 +9,6 @@
 using namespace mm_core;
 using namespace std;
 
-
 namespace memalloc {
     void * malloc(size_t size) {
         return mm_core::malloc(size);
