@@ -10,6 +10,7 @@ objects:
 lib:
 	-mkdir bin
 	ar -cvq -o bin/libmemalloc.a memalloc_core.o memalloc.o
+	#g++ -shared -o /usr/lib/libmemalloc.so memalloc_core.o memalloc.o -O3
 
 clean: clean_objects
 	rm testing.out
