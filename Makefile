@@ -1,16 +1,21 @@
+CXXFLAGS = -O3 -Wall -std=c++11
+CXX = g++
+
+
 all: objects lib clean_objects
-	g++ src/testing.cpp -lmemalloc -L./bin/ -o testing.out  -O3 -std=c++17
+	#$(CXX) src/testing.cpp -lmemalloc -L./bin/ -o testing.out  -O3 -std=c++11
+	$(CXX) src/testing.cpp -o testing.out $(CXXFLAGS) -std=c++17 -Lbin/ -lmemalloc
 
 run:
 	./testing.out
 
 objects:
-	g++ -c -fpic src/memalloc.cpp src/core/memalloc_core.cpp -O3
+	$(CXX) -c src/memalloc.cpp -o memalloc.o $(CXXFLAGS)
+	$(CXX) -c src/core/memalloc_core.cpp -o memalloc_core.o $(CXXFLAGS)
 
 lib:
 	-mkdir bin
-	ar -cvq -o bin/libmemalloc.a memalloc_core.o memalloc.o
-	#g++ -shared -o /usr/lib/libmemalloc.so memalloc_core.o memalloc.o -O3
+	ar rvs bin/libmemalloc.a memalloc_core.o memalloc.o
 
 clean: clean_objects
 	rm testing.out
