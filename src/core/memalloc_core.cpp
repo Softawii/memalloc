@@ -98,7 +98,7 @@ namespace mm_core {
     block_t find_first_fit(block_t * last, size_t size) {
         block_t b = (block_t) base;
 
-        while (b && ! (b->size >= size)) {
+        while (b && ! (b->free && b->size >= size)) {
             *last = b;
             b = b->next;
         }
@@ -116,21 +116,21 @@ namespace mm_core {
         
         block_t b = (block_t) base;
         block_t bigger = NULL;
-
         while (b && ! (b->free && b->size == size)) {
-            *last = b;
-            b = b->next;
-
             if(b->size >= size && 
                 ((b->free && bigger && b->size > bigger->size) || 
                 (b->free && !bigger)) ) 
             {
                 bigger = b;
             }
+            
+            *last = b;
+            b = b->next;
         }
-        if(b->size == size) {
+        if(b && b->size == size) {
             return b;
         }
+
         return (bigger);
     }
 
