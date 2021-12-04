@@ -3,8 +3,7 @@ CXX = g++
 
 
 all: objects lib clean_objects
-	#$(CXX) src/testing.cpp -lmemalloc -L./bin/ -o testing.out  -O3 -std=c++11
-	$(CXX) src/testing.cpp -o testing.out $(CXXFLAGS) -std=c++17 -Lbin/ -lmemalloc
+	$(CXX) src/testing.cpp -o bin/testing.out $(CXXFLAGS) -std=c++17 -Lbin/ -lmemalloc
 
 run:
 	./testing.out
