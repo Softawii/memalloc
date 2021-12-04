@@ -52,6 +52,7 @@ namespace mm_core {
      * @brief Find collection
      */
     bool select_find(string s);
+    string get_find();
     block_t find(block_t * last, size_t size);
     block_t find_first_fit(block_t * last, size_t size);
     block_t find_worst_fit(block_t * last, size_t size);

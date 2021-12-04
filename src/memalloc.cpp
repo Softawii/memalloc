@@ -21,4 +21,8 @@ namespace memalloc {
     bool select_find(string method) {
         return mm_core::select_find(method); 
     }
+
+    string get_find() {
+        return mm_core::get_find();
+    }
 }

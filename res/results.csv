@@ -4130,3 +4130,6 @@ test_intensive_overlap,std,501,1017.341003
 ,memalloc,1000,27.052002
 ,memalloc,1000,21.000002
 ,std,1000,13.090000
+,memalloc,100,0.365000,
+,memalloc,100,0.321000,first_fit
+,std,100,0.128000,std

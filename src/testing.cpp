@@ -153,6 +153,7 @@ int test_intensive_overlap(void * (*allocator)(size_t), void (*deallocator)(void
 
 int main(int argc, char **argv) {
     string type = "memalloc";
+    string find_type;
     Test_PTR test = test_alloc;
     string test_name;
     bool print = false;
@@ -182,7 +183,6 @@ int main(int argc, char **argv) {
         std::string arg(argv[i]);
         if(arg.find("--find") != std::string::npos) {
             bool found = mm::select_find(arg);
-
             if(!found) {
                 cout << RED << "Error: " << arg << " not found" << COLOR_RESET << endl;
                 return 1;
@@ -190,6 +190,9 @@ int main(int argc, char **argv) {
         }
     }
 
+    // Type of the find
+    find_type = type.compare("std") == 0 ? "std" : mm::get_find();
+    
     std::ofstream myfile;
 
     if(std::filesystem::exists("./res/results.csv")) {
@@ -197,7 +200,7 @@ int main(int argc, char **argv) {
     }
     else {
         myfile.open("./res/results.csv", std::ofstream::app);
-        myfile << "test" << "," << "type" << "," << "interactions" << "," << "elapsed_time" << endl;
+        myfile << "test" << "," << "type" << "," << "interactions" << "," << "elapsed_time" << "," << "find_type" << endl;
     }
     /**
      * @brief Base stats 
@@ -223,5 +226,5 @@ int main(int argc, char **argv) {
 
     if(print)
         cout << GREEN << "Elapsed Time: " << std::to_string(stopwatch.mElapsedTime) << COLOR_RESET << endl;
-    myfile << std::to_string(stopwatch.mElapsedTime) << endl;
+    myfile << std::to_string(stopwatch.mElapsedTime) << "," << find_type << endl;
 }

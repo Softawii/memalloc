@@ -19,6 +19,7 @@ namespace mm_core {
     
     void* base = NULL;                                              // Pointer to the first element of the list of memory blocks.
     block_t (* selected_find) (block_t *, size_t) = find_first_fit; // A selected block of memory. Default: first_fit.
+    string selected_find_name = "first_fit";                         // Name of the selected block of memory. Default: first_fit.
 
 
     /**
@@ -55,12 +56,13 @@ namespace mm_core {
 	bool select_find(string s) {
 	
 		if (s.compare("--find_first_fit") == 0) {
-
+            
             #ifdef MEMALLOC_CORE_DEBUG
                 cout << "Selected find: first_fit" << endl;
             #endif
 
 			selected_find = find_first_fit;
+            selected_find_name = "first_fit";
 			return true;
 		}
 		else if (s.compare("--find_worst_fit") == 0) {
@@ -69,6 +71,7 @@ namespace mm_core {
             #endif
 
 			selected_find = find_worst_fit;
+            selected_find_name = "worst_fit";
 			
             return true;
 
@@ -79,12 +82,18 @@ namespace mm_core {
             #endif
 
 			selected_find = find_null;
+            selected_find_name = "null";
 			
             return true;
 
 		}
 		return false;
 	}
+
+
+    string get_find() {
+        return selected_find_name;
+    }
 
 
     /**

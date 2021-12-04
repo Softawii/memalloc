@@ -35,6 +35,8 @@ namespace memalloc {
 
     bool select_find(string method);
 
+    string get_find();
+
 }
 
 #endif // End of __MEMALLOC_HPP__
