@@ -73,6 +73,16 @@ namespace mm_core {
             return true;
 
 		}
+        else if (s.compare("--find_null") == 0) {
+            #ifdef MEMALLOC_CORE_DEBUG
+                cout << "Selected find: null" << endl;
+            #endif
+
+			selected_find = find_null;
+			
+            return true;
+
+		}
 		return false;
 	}
 
@@ -133,6 +143,18 @@ namespace mm_core {
 
         return (bigger);
     }
+
+    /**
+     * @brief just NULL
+     * 
+     * @param last 
+     * @param size 
+     * @return NULL
+     */
+    block_t find_null(block_t * last, size_t size) {
+        return NULL;
+    }
+
 
     /**
      * @brief This function will extend the heap with the given size.

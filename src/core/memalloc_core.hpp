@@ -55,6 +55,7 @@ namespace mm_core {
     block_t find(block_t * last, size_t size);
     block_t find_first_fit(block_t * last, size_t size);
     block_t find_worst_fit(block_t * last, size_t size);
+    block_t find_null(block_t * last, size_t size);
 
 
     /**
