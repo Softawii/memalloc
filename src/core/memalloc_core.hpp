@@ -14,6 +14,9 @@
 #define __MEMALLOC_CORE_HPP__
 
 
+#include <iostream>
+using namespace std;
+
 #define BLOCK_SIZE (sizeof(struct s_block) - 1)
 
 /**
@@ -44,8 +47,19 @@ namespace mm_core {
      */
     void split(block_t b, size_t size);
 
-    block_t find(block_t * last, size_t size);
 
+    /**
+     * @brief Find collection
+     */
+    bool select_find(string s);
+    block_t find(block_t * last, size_t size);
+    block_t find_first_fit(block_t * last, size_t size);
+    block_t find_worst_fit(block_t * last, size_t size);
+
+
+    /**
+     * @brief Allocate memory
+     */
     block_t extend_heap(block_t last, size_t size);
 
 

@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
+#include <iostream>
+using namespace std;
+
 // Memory allocation
 #include "memalloc_core.hpp"
 
@@ -12,10 +16,11 @@
  * @details The core is responsible for allocating and freeing memory in a low level, using sbrk.
  */
 namespace mm_core {
-
-    void* base = NULL;
-
     
+    void* base = NULL;                                              // Pointer to the first element of the list of memory blocks.
+    block_t (* selected_find) (block_t *, size_t) = find_first_fit; // A selected block of memory. Default: first_fit.
+
+
     /**
      * @brief splitting a block into two blocks, the second one will be free. 
      * 
@@ -40,6 +45,26 @@ namespace mm_core {
         }
     }
 
+    /**
+     * @brief Function to select an algorithm to find a block of memory.
+     * 
+     * @param s 
+     * @return true 
+     * @return false 
+     */
+	bool select_find(string s) {
+	
+		if (s.compare("--find_first_fit") == 0) {
+			selected_find = find_first_fit;
+			return true;
+		}
+		else if (s.compare("--find_worst_fit") == 0) {
+			selected_find = find_worst_fit;
+			return true;
+		}
+		return false;
+	}
+
 
     /**
      * @brief This function is trying to find some block that fit the size.
@@ -49,17 +74,34 @@ namespace mm_core {
      * @return block_t 
      */
     block_t find(block_t * last, size_t size) {
-        
+        return selected_find(last, size);
+    }
+
+    /**
+     * @brief Find function that will find the first block that fit the size.
+     * 
+     * @param last 
+     * @param size 
+     * @return block_t The first block that fit the size or NULL if there is no block that fit the size.
+     */
+    block_t find_first_fit(block_t * last, size_t size) {
         block_t b = (block_t) base;
 
-        while (b && ! (b->free && b->size >= size)) {
+        while (b && ! (b->size >= size)) {
             *last = b;
             b = b->next;
         }
         return (b);
     }
-
-    block_t find_fragmentation_proof(block_t * last, size_t size) {
+    
+    /**
+     * @brief Find function that will find the biggest block that fit the size.
+     * 
+     * @param last 
+     * @param size 
+     * @return block_t the biggest block or NULL if there is no block that fit the size.
+     */
+    block_t find_worst_fit(block_t * last, size_t size) {
         
         block_t b = (block_t) base;
         // Iniciando o bigger como NULL pq pode existir a possibilidade de nenhum bloco de encaixar na requisicao
