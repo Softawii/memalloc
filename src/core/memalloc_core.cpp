@@ -59,6 +59,24 @@ namespace mm_core {
         return (b);
     }
 
+    block_t find_fragmentation_proof(block_t * last, size_t size) {
+        
+        block_t b = (block_t) base;
+        block_t bigger = b;
+
+        while (b && ! (b->free && b->size == size)) {
+            *last = b;
+            b = b->next;
+            if(b->size > bigger->size) {
+                bigger = b;
+            }
+        }
+        if(b->size == size) {
+            return b;
+        }
+        return (bigger);
+    }
+
     /**
      * @brief This function will extend the heap with the given size.
      * 
