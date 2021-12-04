@@ -4109,3 +4109,5 @@ test_intensive_overlap,memalloc,491,5352.333984
 test_intensive_overlap,std,491,960.364990
 test_intensive_overlap,memalloc,501,5376.923828
 test_intensive_overlap,std,501,1017.341003
+,memalloc,100,0.322000
+,memalloc,100,0.618000

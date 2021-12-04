@@ -15,6 +15,9 @@
 #ifndef __MEMALLOC_HPP__
 #define __MEMALLOC_HPP__
 
+#include <string>
+#include <iostream>
+using namespace std;
 
 
 /**

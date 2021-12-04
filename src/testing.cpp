@@ -177,6 +177,17 @@ int main(int argc, char **argv) {
         else if(strcmp(argv[i], "--test_overlap") == 0)      { test = test_overlap; test_name = "test_overlap"; }
         else if(strcmp(argv[i], "--test_intensive_overlap") == 0)      { test = test_intensive_overlap; test_name = "test_intensive_overlap"; }
 
+
+        // Find
+        std::string arg(argv[i]);
+        if(arg.find("--find") != std::string::npos) {
+            bool found = mm::select_find(arg);
+
+            if(!found) {
+                cout << RED << "Error: " << arg << " not found" << COLOR_RESET << endl;
+                return 1;
+            }
+        }
     }
 
     std::ofstream myfile;

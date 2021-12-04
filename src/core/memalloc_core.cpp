@@ -55,12 +55,21 @@ namespace mm_core {
 	bool select_find(string s) {
 	
 		if (s.compare("--find_first_fit") == 0) {
+
+            #ifdef MEMALLOC_CORE_DEBUG
+                cout << "Selected find: first_fit" << endl;
+            #endif
+
 			selected_find = find_first_fit;
 			return true;
 		}
 		else if (s.compare("--find_worst_fit") == 0) {
 			selected_find = find_worst_fit;
 			return true;
+
+            #ifdef MEMALLOC_CORE_DEBUG
+                cout << "Selected find: worst_fit" << endl;
+            #endif
 		}
 		return false;
 	}
