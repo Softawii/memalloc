@@ -62,18 +62,24 @@ namespace mm_core {
     block_t find_fragmentation_proof(block_t * last, size_t size) {
         
         block_t b = (block_t) base;
-        block_t bigger = b;
+        // Iniciando o bigger como NULL pq pode existir a possibilidade de nenhum bloco de encaixar na requisicao
+        block_t bigger = NULL;
 
         while (b && ! (b->free && b->size == size)) {
             *last = b;
             b = b->next;
-            if(b->size > bigger->size) {
+            
+            // (bigger && b->free && b->size > bigger->size) -> Bigger Existe? O B ta livre? O B é maior que o Bigger? Se Sim para todos adicionar!
+            // (b->free && bigger == NULL) -> B ta livre? Bigger nao existe? Se sim, adiciona!
+            if( (bigger && b->free && b->size > bigger->size) || (b->free && bigger == NULL)  ) {
                 bigger = b;
             }
         }
-        if(b->size == size) {
+        if(b->free && b->size == size) {
             return b;
         }
+
+        // Quando retorna NULL ele adiciona mais na memória (Mecanismo do malloc é esse)
         return (bigger);
     }
 
