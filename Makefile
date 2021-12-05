@@ -18,10 +18,11 @@ run:
 objects:
 	$(CXX) -c src/memalloc.cpp -o memalloc.o $(CXXFLAGS)
 	$(CXX) -c src/core/memalloc_core.cpp -o memalloc_core.o $(CXXFLAGS)
+	$(CXX) -c src/core/memalloc_info.cpp -o memalloc_info.o $(CXXFLAGS)
 
 lib:
 	-mkdir bin
-	ar rvs bin/libmemalloc.a memalloc_core.o memalloc.o
+	ar rvs bin/libmemalloc.a memalloc_core.o memalloc_info.o memalloc.o
 
 compile: 
 	$(CXX) src/testing.cpp -o bin/testing.out $(CXXFLAGS) -std=c++17 -Lbin/ -lmemalloc
@@ -33,3 +34,4 @@ clean: clean_objects
 clean_objects:
 	-rm memalloc.o
 	-rm memalloc_core.o
+	-rm memalloc_info.o
