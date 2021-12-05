@@ -12,7 +12,6 @@
 #include <assert.h>
 
 #include "memalloc.hpp"
-#include "core/memalloc_core.hpp"
 #include "lib/App.h"
 
 #define GREEN "\033[0;32m"
