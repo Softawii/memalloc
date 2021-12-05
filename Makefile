@@ -2,11 +2,15 @@ CXXFLAGS = -O3 -Wall -std=c++11 -lstdc++fs
 CXX = g++
 
 
-all: objects lib clean_objects
-	$(CXX) src/testing.cpp -o bin/testing.out $(CXXFLAGS) -std=c++17 -Lbin/ -lmemalloc
+all: objects lib clean_objects compile
+	rm ./res/results.csv
 
 debug: CXXFLAGS += -DMEMALLOC_CORE_DEBUG -g
 debug: all
+
+minimum: CXXFLAGS += -DTESTING_MINIMUM -g
+minimum: objects lib clean_objects compile
+	rm ./res/minimum_results.csv
 
 run:
 	./testing.out
@@ -19,8 +23,11 @@ lib:
 	-mkdir bin
 	ar rvs bin/libmemalloc.a memalloc_core.o memalloc.o
 
+compile: 
+	$(CXX) src/testing.cpp -o bin/testing.out $(CXXFLAGS) -std=c++17 -Lbin/ -lmemalloc
+
 clean: clean_objects
-	rm testing.out
+	rm ./bin/testing.out
 	rm ./bin/libmemalloc.a
 
 clean_objects:
