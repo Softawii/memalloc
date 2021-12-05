@@ -3,6 +3,9 @@
 #include <fstream>
 #include <filesystem>
 
+#include <iomanip>
+#include <limits>
+
 #include <string>
 #include <string.h>
 
@@ -220,11 +223,11 @@ int main(int argc, char **argv) {
     
     cout << RED;
     START_STOPWATCH(stopwatch);
-    for(int i = 1; i <= count; i += 1) test(allocator, deallocator, i * 5);
+    for(int i = 1; i <= count; i += 1)  test(allocator, deallocator, i * 5);
     STOP_STOPWATCH(stopwatch);
     cout << COLOR_RESET;  
 
     if(print)
         cout << GREEN << "Elapsed Time: " << std::to_string(stopwatch.mElapsedTime) << COLOR_RESET << endl;
-    myfile << std::to_string(stopwatch.mElapsedTime) << "," << find_type << endl;
+    myfile << std::fixed << std::setprecision(10) << stopwatch.mElapsedTime << "," << find_type << std::endl;
 }
