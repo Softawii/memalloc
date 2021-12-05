@@ -34,6 +34,8 @@ namespace mm_core {
      */
     struct s_block {
         size_t size;            /* Size of the block */
+        struct s_block *next_free;   /* Next free block */
+        struct s_block *prev_free;   /* Previous free block */
         struct s_block * next;  /* Next Block */
         struct s_block * prev;  /* Previous Block */
         void * ptr;             /* Pointer to the data */

@@ -18,6 +18,7 @@ using namespace std;
 namespace mm_core {
     
     void* base = NULL;                                              // Pointer to the first element of the list of memory blocks.
+    void* base_free = NULL;                                         // Pointer to the first element of the list of free memory blocks.
     block_t (* selected_find) (block_t *, size_t) = find_first_fit; // A selected block of memory. Default: first_fit.
     string selected_find_name = "first_fit";                         // Name of the selected block of memory. Default: first_fit.
 
@@ -36,7 +37,13 @@ namespace mm_core {
         new_b->prev = b;
         
         new_b->free = true;
-
+        block_t next_free = (block_t) base_free;
+        
+        /** @brief Adicionando o novo bloco livre ao inicio da lista de blocos livres.*/
+        new_b->next_free = next_free;
+        next_free->prev_free = new_b;
+        base_free = new_b;
+    
         new_b->ptr = new_b->data;
         b->size = size;
         b->next = new_b;
@@ -187,6 +194,8 @@ namespace mm_core {
         b->next = NULL;
         b->prev = last;
         b->ptr = b->data;
+        b->next_free = NULL;
+        b->prev_free = NULL;
 
         if(last)
             last->next = b;
@@ -206,6 +215,12 @@ namespace mm_core {
     block_t fusion(block_t b){
         if (b->next && b->next->free){
             b->size += BLOCK_SIZE + b->next->size;
+            /** @brief Removendo o b next da lista e adicionando o b.*/
+            if(b->next->prev_free){
+                b->next->prev_free->next_free = b;
+                b->next_free = b->next->next_free;
+            }
+    
             b->next = b->next->next;
             if (b->next) {
                 b->next->prev = b;
