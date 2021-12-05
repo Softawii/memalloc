@@ -1,11 +1,12 @@
 CXXFLAGS = -O3 -Wall -std=c++11
 CXX = g++
 
-debug: CXXFLAGS += -DMEMALLOC_CORE_DEBUG -g
-debug: all
 
 all: objects lib clean_objects
 	$(CXX) src/testing.cpp -o bin/testing.out $(CXXFLAGS) -std=c++17 -Lbin/ -lmemalloc
+
+debug: CXXFLAGS += -DMEMALLOC_CORE_DEBUG -g
+debug: all
 
 run:
 	./testing.out
