@@ -4,67 +4,55 @@
 
 namespace mm_info {
 
-    int get_ordblks() {
-        mm_core::block_t b = (mm_core::block_t) mm_core::base;
-        int count = 0;
-        while (b)
-        {
-            if (b->free)
-                count++;
-            b = b->next;
-        }
+    int get_ordblks(mm_core::block_t b) {
+        if (b->free)
+            return 1;
         
-        return count;
+        return 0;
     }
 
-    int get_uordblks() {
-        mm_core::block_t b = (mm_core::block_t) mm_core::base;
-        int count = 0;
-        while (b)
-        {
-            if (!b->free)
-                count += b->size;
-            b = b->next;
-        }
-        
-        return count;
+    int get_uordblks(mm_core::block_t b) {
+        if (!b->free)
+            return b->size;
+
+        return 0;
     }
 
-    int get_fordblks() {
-        mm_core::block_t b = (mm_core::block_t) mm_core::base;
-        int count = 0;
-        while (b)
-        {
-            if (b->free)
-                count += b->size;
-            b = b->next;
-        }
+    int get_fordblks(mm_core::block_t b) {
+        if (b->free)
+            return b->size;
         
-        return count;
+        return 0;
     }
 
-    int get_keepcost() {
+    int get_keepcost(mm_core::block_t b) {
+        if(b->free)
+            return b->size;
+        
+        return -1;
+    }
+
+    void get_values(struct mallinfo * info) {
         mm_core::block_t b = (mm_core::block_t) mm_core::base;
-        int count = 0;
+        info->ordblks = 0;
+        info->uordblks = 0;
+        info->fordblks = 0;
+        info->keepcost = 0;
         while (b)
         {
-            if(b->free)
-                count += b->size;
-            else
-                count = 0;
-        }
-        
-        return count;
+            info->ordblks += get_ordblks(b);
+            info->uordblks += get_uordblks(b);
+            info->fordblks += get_fordblks(b);
+            info->keepcost = get_keepcost(b) == -1? 0 : get_keepcost(b) + info->keepcost;
+            b = b->next;
+        }        
     }
 
     struct mallinfo mallinfo() {
         struct mallinfo info;
 
-        info.ordblks = get_ordblks();
-        info.uordblks = get_uordblks();
-        info.fordblks = get_fordblks();
-        info.keepcost = get_keepcost();
-
+        get_values(&info);
+        
         return info;
     }
 }
