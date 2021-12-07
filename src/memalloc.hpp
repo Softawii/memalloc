@@ -15,6 +15,9 @@
 #ifndef __MEMALLOC_HPP__
 #define __MEMALLOC_HPP__
 
+#include <string>
+#include <iostream>
+using namespace std;
 
 
 /**
@@ -29,6 +32,10 @@ namespace memalloc {
     void * malloc(size_t size);
 
     void free(void * ptr);
+
+    bool select_find(string method);
+
+    string get_find();
 
 }
 

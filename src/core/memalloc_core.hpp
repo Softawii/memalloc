@@ -14,6 +14,9 @@
 #define __MEMALLOC_CORE_HPP__
 
 
+#include <iostream>
+using namespace std;
+
 #define BLOCK_SIZE (sizeof(struct s_block) - 1)
 
 /**
@@ -26,25 +29,16 @@ namespace mm_core {
     /* Linked List of Blocks */
     typedef struct s_block * block_t;
     
-    /* Base Pointer */
-    extern void * base;
-
     /**
      * @brief Block structure, contains the size of the block and the next block
      */
     struct s_block {
-        /* Size of the block */
-        size_t size;
-        /* Next Block */
-        block_t next;
-        /* Previous Block */
-        block_t prev;
-        /* Free */
-        bool free;
-        /* Pointer to the data */
-        void * ptr;
-        /* Data */
-        char data[1];
+        size_t size;            /* Size of the block */
+        struct s_block * next;  /* Next Block */
+        struct s_block * prev;  /* Previous Block */
+        void * ptr;             /* Pointer to the data */
+        bool free;              /* Free */
+        char data[1];           /* Data */
     } __attribute__((packed)); // Precisa disso aq, by EduardoFerro
     // O Compilador ta alinhando isso ai, ent~ao tem que remover o alinhamentog
 
@@ -53,8 +47,21 @@ namespace mm_core {
      */
     void split(block_t b, size_t size);
 
-    block_t find(block_t * last, size_t size);
 
+    /**
+     * @brief Find collection
+     */
+    bool select_find(string s);
+    string get_find();
+    block_t find(block_t * last, size_t size);
+    block_t find_first_fit(block_t * last, size_t size);
+    block_t find_worst_fit(block_t * last, size_t size);
+    block_t find_null(block_t * last, size_t size);
+
+
+    /**
+     * @brief Allocate memory
+     */
     block_t extend_heap(block_t last, size_t size);
 
 
@@ -67,6 +74,10 @@ namespace mm_core {
     block_t get_block(void * ptr);
 
     bool valid_address(void * ptr);
+
+    void * malloc(size_t size);
+
+    void free(void * ptr);
 
     
 

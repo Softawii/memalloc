@@ -1,0 +1,17 @@
+test,type,interactions,find_type,ordblks,uordblks,fordblks,keepcost
+test_fragmentation,memmaloc,100,first_fit,0,0,0,0
+test_fragmentation,memmaloc,100,first_fit,2,520,5200,0
+test_fragmentation,memmaloc,100,first_fit,2,1720,3967,0
+test_fragmentation,memmaloc,100,first_fit,0,0,0,0
+test_fragmentation,memmaloc,100,worst_fit,0,0,0,0
+test_fragmentation,memmaloc,100,worst_fit,2,520,5200,0
+test_fragmentation,memmaloc,100,worst_fit,1,1720,4000,0
+test_fragmentation,memmaloc,100,worst_fit,0,0,0,0
+test_fragmentation,memmaloc,100,null,0,0,0,0
+test_fragmentation,memmaloc,100,null,1,120,4000,0
+test_fragmentation,memmaloc,100,null,1,1200,4000,0
+test_fragmentation,memmaloc,100,null,0,0,0,0
+test_fragmentation,std,100,std,1,83488,51680,51680
+test_fragmentation,std,100,std,3,84032,51136,45904
+test_fragmentation,std,100,std,2,85248,49920,45904
+test_fragmentation,std,100,std,3,84032,51136,45904
