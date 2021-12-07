@@ -205,6 +205,39 @@ int test_intensive_overlap(void * (*allocator)(size_t), void (*deallocator)(void
         return 0;
 }
 
+int test_fragmentation(void * (*allocator)(size_t), void (*deallocator)(void *), size_t size, struct mallinfos* infos) {
+    #ifdef TESTING_MALLINFO
+        save_mallinfo(infos, "test_fragmentation", size);
+    #endif
+    
+    int *integers1 = (int *) allocator(1000 * sizeof(int));
+    int *integers2 = (int *) allocator(100 * sizeof(int));
+    int *integers3 = (int *) allocator(300 * sizeof(int));
+    int *integers4 = (int *) allocator(30 * sizeof(int));
+
+    deallocator(integers1);
+    deallocator(integers3);
+
+    #ifdef TESTING_MALLINFO
+        save_mallinfo(infos, "test_fragmentation", size);
+    #endif
+
+    int *integers5 = (int *) allocator(300 * sizeof(int));
+
+    #ifdef TESTING_MALLINFO
+        save_mallinfo(infos, "test_fragmentation", size);
+    #endif
+
+    
+    deallocator(integers2);
+    deallocator(integers4);
+    deallocator(integers5);
+    #ifdef TESTING_MALLINFO
+        save_mallinfo(infos, "test_fragmentation", size);
+    #endif
+    return 0;
+}
+
 int main(int argc, char **argv) {
     string type = "memalloc";
     string find_type;
@@ -233,6 +266,7 @@ int main(int argc, char **argv) {
         else if(strcmp(argv[i], "--test_alloc") == 0)        { test = test_alloc; test_name = "test_alloc"; }
         else if(strcmp(argv[i], "--test_overlap") == 0)      { test = test_overlap; test_name = "test_overlap"; }
         else if(strcmp(argv[i], "--test_intensive_overlap") == 0)      { test = test_intensive_overlap; test_name = "test_intensive_overlap"; }
+        else if(strcmp(argv[i], "--test_fragmentation") == 0)      { test = test_fragmentation; test_name = "test_fragmentation"; }
 
 
         // Find
