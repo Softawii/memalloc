@@ -197,12 +197,15 @@ int main(int argc, char **argv) {
     find_type = type.compare("std") == 0 ? "std" : mm::get_find();
     
     std::ofstream myfile;
-
-    if(std::filesystem::exists("./res/results.csv")) {
-        myfile.open("./res/results.csv", std::ofstream::app);
+    string filename = "./res/results.csv";
+    #ifdef TESTING_MINIMUM 
+        filename = "./res/minimum_results.csv";
+    #endif
+    if(std::filesystem::exists(filename)) {
+        myfile.open(filename, std::ofstream::app);
     }
     else {
-        myfile.open("./res/results.csv", std::ofstream::app);
+        myfile.open(filename, std::ofstream::app);
         myfile << "test" << "," << "type" << "," << "interactions" << "," << "elapsed_time" << "," << "find_type" << endl;
     }
     /**
@@ -222,9 +225,16 @@ int main(int argc, char **argv) {
         cout << "Batch of tests in " << type << endl;
     
     cout << RED;
+    
     START_STOPWATCH(stopwatch);
-    for(int i = 1; i <= count; i += 1)  test(allocator, deallocator, i * 5);
+    #ifdef TESTING_MINIMUM 
+        test(allocator, deallocator, count);
+    #else
+        for(int i = 1; i <= count; i += 1)  test(allocator, deallocator, i * 5);
+    #endif
     STOP_STOPWATCH(stopwatch);
+
+    
     cout << COLOR_RESET;  
 
     if(print)

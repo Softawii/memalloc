@@ -1,5 +1,3 @@
-rm -f "res/results.csv"
-
 echo -e "Teste base:\n"
 for counter in {1..5001..10}; do
     if [ $(((counter - 1)%100)) = $((0)) ]; then 
