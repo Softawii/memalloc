@@ -171,43 +171,48 @@ int test_overlap(void * (*allocator)(size_t), void (*deallocator)(void *), size_
     return 0;
 }
 
-
 int test_intensive_overlap(void * (*allocator)(size_t), void (*deallocator)(void *), size_t size, struct mallinfos* infos) {
-    for(size_t n = 1; n < size; n++) {
-        int *integers1 = (int *) allocator(sizeof(int) * n);
-        #ifdef TESTING_MALLINFO
-            save_mallinfo(infos, "test_intensive_overlap", size);
-        #endif
-        for (size_t i = 0; i < n; i++) {
-            integers1[i] = 10;
-        }
-        
-        int *integers2 = (int *) allocator(sizeof(int) * n);
-        #ifdef TESTING_MALLINFO
-            save_mallinfo(infos, "test_intensive_overlap", size);
-        #endif
-        for (size_t i = 0; i < n; i++) {
-            integers2[i] = 5;
-        }
+        int **integers1 = (int **) allocator(sizeof(int*) * size);
+        int **integers2 = (int **) allocator(sizeof(int*) * size); 
 
-        for (size_t i = 0; i < n; i++) {
-            assert(integers1[i] == 10);
-            assert(integers2[i] == 5);
-        }
+        for(size_t n = 1; n < size; n++) {
+            integers1[n - 1] = (int *) allocator(sizeof(int) * n);
+            #ifdef TESTING_MALLINFO
+                save_mallinfo(infos, "test_intensive_overlap", size);
+            #endif
+            for (size_t i = 0; i < n; i++) {
+                integers1[n-1][i] = 10;
+            }
 
-        deallocator(integers1);
-        deallocator(integers2);
-        #ifdef TESTING_MALLINFO
-            save_mallinfo(infos, "test_intensive_overlap", size);
-        #endif
-    }
+            integers2[n - 1] = (int *) allocator(sizeof(int) * n);
 
-        return 0;
+            #ifdef TESTING_MALLINFO
+                save_mallinfo(infos, "test_intensive_overlap", size);
+            #endif
+            for (size_t i = 0; i < n; i++) {
+                integers2[n-1][i] = 5;
+            }
+
+            for (size_t i = 0; i < n; i++) {
+                assert(integers1[n-1][i] == 10);
+                assert(integers2[n-1][i] == 5);
+            }
+
+            deallocator(integers1[n-1]);
+            deallocator(integers2[n-1]);
+            #ifdef TESTING_MALLINFO
+                save_mallinfo(infos, "test_intensive_overlap", size);
+            #endif
+        } 
+     deallocator(integers1);
+     deallocator(integers2);
+     return 0;
 }
+
 
 int test_fragmentation(void * (*allocator)(size_t), void (*deallocator)(void *), size_t size, struct mallinfos* infos) {
     #ifdef TESTING_MALLINFO
-        save_mallinfo(infos, "test_fragmentation", size);
+        save_mallinfo(infos, "test_fragmentation", 0);
     #endif
     
     int *integers1 = (int *) allocator(1000 * sizeof(int));
